@@ -40,7 +40,7 @@
 /* Basic information exposed publicly */
 #define SMEXT_CONF_NAME			"SMbz2"
 #define SMEXT_CONF_DESCRIPTION	"Very basic extension to de/compress bz2 files"
-#define SMEXT_CONF_VERSION		"0.0.1"
+#define SMEXT_CONF_VERSION		"0.0.2"
 #define SMEXT_CONF_AUTHOR		"Thrawn"
 #define SMEXT_CONF_URL			"http://aaa.einfachonline.net/"
 #define SMEXT_CONF_LOGTAG		"SMBZ2"
