@@ -95,6 +95,8 @@ static cell_t BZ2_DecompressFile(IPluginContext *pCtx, const cell_t *params)
 bool SMBZ2::SDK_OnLoad(char *error, size_t maxlength, bool late)
 {
 	sharesys->AddNatives(myself, smbz2_natives);
+	sharesys->RegisterLibrary(myself, "bzip2");
+
 	g_pAsyncCallback = forwards->CreateForwardEx(NULL, ET_Ignore, 2, NULL, Param_Cell, Param_String, Param_String, Param_Cell);
 	return true;
 }
