@@ -6,7 +6,7 @@ BZThread::~BZThread()
 {
 }
 
-BZThread::BZThread(bool compress, int iCompLevel, char inputPath[], char inputFile[], char outputPath[], char outputFile[], IPluginContext *pCtx, IChangeableForward *pAsyncCallback, funcid_t funcid):IThread()
+BZThread::BZThread(bool compress, int iCompLevel, char inputPath[], char inputFile[], char outputPath[], char outputFile[], IPluginContext *pCtx, IChangeableForward *pAsyncCallback, funcid_t funcid, int32_t data):IThread()
 {	
 	bCompress = compress;
 	iCompressionLevel = iCompLevel;	
@@ -17,6 +17,7 @@ BZThread::BZThread(bool compress, int iCompLevel, char inputPath[], char inputFi
 	g_pCtx = pCtx;
 	g_pAsyncCallback = pAsyncCallback;
 	myfunc = funcid;
+	anyData = data;
 }
 
 void BZThread::RunThread(IThreadHandle* pHandle)
@@ -106,7 +107,8 @@ void BZThread::RunThread(IThreadHandle* pHandle)
 	IPluginFunction *pFunction = g_pCtx->GetFunctionById(myfunc);
 	pFunction->PushCell(bzerror);
 	pFunction->PushString(sInputPath);
-	pFunction->PushString(sOutputFile);	
+	pFunction->PushString(sOutputFile);
+	pFunction->PushCell(anyData);
 
 	pFunction->Execute(&result);
 	g_pAsyncCallback->RemoveFunction(pFunction);

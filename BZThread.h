@@ -18,10 +18,11 @@ private:
 	IPluginContext *g_pCtx;
 	IChangeableForward *g_pAsyncCallback;
 	funcid_t myfunc;
+	int32_t anyData;
 public: //IThread
 	void RunThread(IThreadHandle *pThread);
 	void OnTerminate(IThreadHandle *pThread, bool cancel);
 public:
-	BZThread(bool compress, int iCompLevel, char inputPath[], char inputFile[], char outputPath[], char outputFile[], IPluginContext *pCtx, IChangeableForward *pAsyncCallback, funcid_t);
+	BZThread(bool compress, int iCompLevel, char inputPath[], char inputFile[], char outputPath[], char outputFile[], IPluginContext *pCtx, IChangeableForward *pAsyncCallback, funcid_t, int32_t);
 	~BZThread();
 };

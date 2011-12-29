@@ -18,11 +18,11 @@ enum BZ_Error {
 }
 
 funcenum BZ2Callback {
-  public(BZ_Error:iError, String:inFile[], String:outFile[])
+  public(BZ_Error:iError, String:inFile[], String:outFile[], any:data)
 };
 
-native BZ2_DecompressFile(String:inFile[], String:outFile[], BZ2Callback:cb);
-native BZ2_CompressFile(String:inFile[], String:outFile[], iCompressionLevel, BZ2Callback:cb);
+native BZ2_DecompressFile(String:inFile[], String:outFile[], BZ2Callback:cb, any:data = 0);
+native BZ2_CompressFile(String:inFile[], String:outFile[], iCompressionLevel, BZ2Callback:cb, any:data = 0);
 
 stock BZ2_Error(BZ_Error:iError, String:sError[], iErrorStringLength) {
 	switch(iError) {

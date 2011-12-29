@@ -6,7 +6,6 @@
 #define VERSION 		"0.0.1"
 
 new String:g_sPath[PLATFORM_MAX_PATH] = "maps/";
-//new Handle:g_hTimer = INVALID_HANDLE;
 new Handle:g_hDefaultMapsArray = INVALID_HANDLE;
 new g_iCompressionLevel = 9;
 
@@ -92,6 +91,7 @@ public bool:IsDefaultMap(const String:sMap[]) {
 	return false;
 }
 
+
 public CheckForCompressedMaps() {
 	new Handle:hDir = OpenDirectory(g_sPath);
 
@@ -125,7 +125,7 @@ public CheckForCompressedMaps() {
 	CloseHandle(hDir);
 }
 
-public Decompressed_Map(BZ_Error:iError, String:sIn[], String:sOut[]) {
+public Decompressed_Map(BZ_Error:iError, String:sIn[], String:sOut[], any:data) {
 	if(iError == BZ_OK) {
 		LogMessage("%s successfully decompressed", sIn);
 		CheckForCompressedMaps();
@@ -134,7 +134,7 @@ public Decompressed_Map(BZ_Error:iError, String:sIn[], String:sOut[]) {
 	}
 }
 
-public Compressed_Map(BZ_Error:iError, String:sIn[], String:sOut[]) {
+public Compressed_Map(BZ_Error:iError, String:sIn[], String:sOut[], any:data) {
 	if(iError == BZ_OK) {
 		LogMessage("%s successfully compressed", sIn);
 		CheckForUncompressedMaps();

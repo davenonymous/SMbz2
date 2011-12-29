@@ -56,7 +56,7 @@ static cell_t BZ2_CompressFile(IPluginContext *pCtx, const cell_t *params)
 	char outputPath[PLATFORM_MAX_PATH];
 	smutils->BuildPath(Path_Game, outputPath, sizeof(outputPath), "%s", outputFile);
 	
-	BZThread* myThread = new BZThread(true,compressionLevel,inputPath,inputFile,outputPath,outputFile,pCtx,g_pAsyncCallback, static_cast<funcid_t>(params[4]));
+	BZThread* myThread = new BZThread(true,compressionLevel,inputPath,inputFile,outputPath,outputFile,pCtx,g_pAsyncCallback, static_cast<funcid_t>(params[4]), params[5]);
     ThreadParams threadparams;
     threadparams.flags = Thread_Default;
     threadparams.prio = ThreadPrio_Low;
@@ -82,7 +82,7 @@ static cell_t BZ2_DecompressFile(IPluginContext *pCtx, const cell_t *params)
 	char outputPath[PLATFORM_MAX_PATH];
 	smutils->BuildPath(Path_Game, outputPath, sizeof(outputPath), "%s", outputFile);
 
-	BZThread* myThread = new BZThread(false,1,inputPath,inputFile,outputPath,outputFile,pCtx,g_pAsyncCallback, static_cast<funcid_t>(params[3]));
+	BZThread* myThread = new BZThread(false,1,inputPath,inputFile,outputPath,outputFile,pCtx,g_pAsyncCallback, static_cast<funcid_t>(params[3]), params[4]);
     ThreadParams threadparams;
     threadparams.flags = Thread_Default;
     threadparams.prio = ThreadPrio_Low;
@@ -95,7 +95,7 @@ static cell_t BZ2_DecompressFile(IPluginContext *pCtx, const cell_t *params)
 bool SMBZ2::SDK_OnLoad(char *error, size_t maxlength, bool late)
 {
 	sharesys->AddNatives(myself, smbz2_natives);
-	g_pAsyncCallback = forwards->CreateForwardEx(NULL, ET_Ignore, 2, NULL, Param_Cell, Param_String);
+	g_pAsyncCallback = forwards->CreateForwardEx(NULL, ET_Ignore, 2, NULL, Param_Cell, Param_String, Param_String, Param_Cell);
 	return true;
 }
 
