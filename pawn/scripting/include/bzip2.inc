@@ -1,3 +1,8 @@
+#if defined _bzip2_included
+ #endinput
+#endif
+#define _bzip2_included
+
 enum BZ_Error {
 	BZ_OK				= 0,
 	BZ_RUN_OK			= 1,
@@ -69,3 +74,11 @@ public Extension:__ext_bzip2 =
 	required = 0,
 #endif
 };
+
+#if !defined REQUIRE_EXTENSIONS
+public __ext_bzip2_SetNTVOptional()
+{
+	MarkNativeAsOptional("BZ2_DecompressFile");
+	MarkNativeAsOptional("BZ2_CompressFile");
+}
+#endif
