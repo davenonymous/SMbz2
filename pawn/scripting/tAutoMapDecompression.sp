@@ -13,12 +13,12 @@ public Plugin:myinfo =
 {
 	name 		= "tAutoMapDecompression",
 	author 		= "Thrawn",
-	description = "",
+	description = "Decompress bz2 compressed maps.",
 	version 	= VERSION,
 };
 
 public OnPluginStart() {
-	CreateConVar("sm_tautomapdecompression_version", VERSION, "", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
+	CreateConVar("sm_tautomapdecompression_version", VERSION, "Decompress bz2 compressed maps.", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 
 	RegAdminCmd("sm_compressmaps", Command_CompressMaps, ADMFLAG_ROOT);
 	RegAdminCmd("sm_decompressmaps", Command_DecompressMaps, ADMFLAG_ROOT);
@@ -26,10 +26,14 @@ public OnPluginStart() {
 
 public Action:Command_CompressMaps(client,args) {
 	CheckForUncompressedMaps();
+
+	return Plugin_Handled;
 }
 
 public Action:Command_DecompressMaps(client,args) {
 	CheckForCompressedMaps();
+
+	return Plugin_Handled;
 }
 
 public CheckForUncompressedMaps() {
