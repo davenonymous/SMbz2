@@ -58,10 +58,17 @@ static cell_t BZ2_CompressFile(IPluginContext *pCtx, const cell_t *params)
 	
 	BZThread* myThread = new BZThread(true,compressionLevel,inputPath,inputFile,outputPath,outputFile,pCtx,g_pAsyncCallback, static_cast<funcid_t>(params[4]), params[5]);
     ThreadParams threadparams;
-    threadparams.flags = Thread_Default;
+    threadparams.flags = Thread_AutoRelease;
     threadparams.prio = ThreadPrio_Low;
 
-	g_pThreader->MakeThread(myThread, &threadparams);
+	IThreadHandle *update_thread;
+	update_thread = g_pThreader->MakeThread(myThread, &threadparams);
+
+	if (update_thread == NULL)
+	{
+		smutils->LogError(myself, "Could not create thread");
+		return false;
+	}
 	
 	return true;
 }
@@ -84,10 +91,17 @@ static cell_t BZ2_DecompressFile(IPluginContext *pCtx, const cell_t *params)
 
 	BZThread* myThread = new BZThread(false,1,inputPath,inputFile,outputPath,outputFile,pCtx,g_pAsyncCallback, static_cast<funcid_t>(params[3]), params[4]);
     ThreadParams threadparams;
-    threadparams.flags = Thread_Default;
+    threadparams.flags = Thread_AutoRelease;
     threadparams.prio = ThreadPrio_Low;
 
-	g_pThreader->MakeThread(myThread, &threadparams);	
+	IThreadHandle *update_thread;
+	update_thread = g_pThreader->MakeThread(myThread, &threadparams);
+
+	if (update_thread == NULL)
+	{
+		smutils->LogError(myself, "Could not create thread");
+		return false;
+	}
 
 	return true;
 }
