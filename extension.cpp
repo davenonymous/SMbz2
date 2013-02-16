@@ -109,8 +109,8 @@ void SMBZ2::CallCallbackFinish(void *data)
 		return;
 
 	pFunction->PushCell(info->bzerror);
-	pFunction->PushString(info->sInputPath);
-	pFunction->PushString(info->sOutputFile);
+	pFunction->PushString(info->sInputPath.c_str());
+	pFunction->PushString(info->sOutputFile.c_str());
 	pFunction->PushCell(info->anyData);
 
 	cell_t result = 0;

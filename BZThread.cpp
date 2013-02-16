@@ -105,8 +105,8 @@ void BZThread::RunThread(IThreadHandle* pHandle)
 	info->g_pCtx = g_pCtx;
 	info->myfunc = myfunc;
 	info->bzerror = bzerror;
-	info->sInputPath = sInputPath;
-	info->sOutputFile = sOutputFile;
+	info->sInputPath.assign(sInputPath);
+	info->sOutputFile.assign(sOutputFile);
 	info->anyData = anyData;
 	
 	smutils->AddFrameAction(SMBZ2::CallCallbackFinish, info);

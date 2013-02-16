@@ -38,13 +38,14 @@
  */
 
 #include "smsdk_ext.h"
+#include <sh_string.h>
 
 struct BZIPCallbackInfo {
 	IPluginContext *g_pCtx;
 	funcid_t myfunc;
 	int bzerror;
-	char *sInputPath;
-	char *sOutputFile;
+	SourceHook::String sInputPath;
+	SourceHook::String sOutputFile;
 	int32_t anyData;
 };
 
