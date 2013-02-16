@@ -39,6 +39,15 @@
 
 #include "smsdk_ext.h"
 
+struct BZIPCallbackInfo {
+	IPluginContext *g_pCtx;
+	funcid_t myfunc;
+	int bzerror;
+	char *sInputPath;
+	char *sOutputFile;
+	int32_t anyData;
+};
+
 /**
  * @brief Sample implementation of the SDK Extension.
  * Note: Uncomment one of the pre-defined virtual functions in order to use it.
@@ -116,6 +125,8 @@ public:
 	 */
 	//virtual bool SDK_OnMetamodPauseChange(bool paused, char *error, size_t maxlength);
 #endif
+public:
+	static void CallCallbackFinish(void *data);
 };
 
 // Natives

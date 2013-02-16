@@ -32,9 +32,7 @@
 #include "extension.h"
 #include "BZThread.h"
 
-IChangeableForward *g_pAsyncCallback = NULL;
 IThreader *g_pThreader = NULL;
-//static IThreadHandle *update_thread;
 
 static cell_t BZ2_CompressFile(IPluginContext *pCtx, const cell_t *params)
 {
@@ -48,18 +46,16 @@ static cell_t BZ2_CompressFile(IPluginContext *pCtx, const cell_t *params)
 	if(compressionLevel < 1)compressionLevel = 1;
 	if(compressionLevel > 9)compressionLevel = 9;
 
-	g_pAsyncCallback->AddFunction(pCtx, static_cast<funcid_t>(params[4]));
-
 	char inputPath[PLATFORM_MAX_PATH];
 	smutils->BuildPath(Path_Game, inputPath, sizeof(inputPath), "%s", inputFile);
 
 	char outputPath[PLATFORM_MAX_PATH];
 	smutils->BuildPath(Path_Game, outputPath, sizeof(outputPath), "%s", outputFile);
 	
-	BZThread* myThread = new BZThread(true,compressionLevel,inputPath,inputFile,outputPath,outputFile,pCtx,g_pAsyncCallback, static_cast<funcid_t>(params[4]), params[5]);
-    ThreadParams threadparams;
-    threadparams.flags = Thread_AutoRelease;
-    threadparams.prio = ThreadPrio_Low;
+	BZThread* myThread = new BZThread(true,compressionLevel,inputPath,inputFile,outputPath,outputFile,pCtx, params[4], params[5]);
+	ThreadParams threadparams;
+	threadparams.flags = Thread_AutoRelease;
+	threadparams.prio = ThreadPrio_Low;
 
 	IThreadHandle *update_thread;
 	update_thread = g_pThreader->MakeThread(myThread, &threadparams);
@@ -81,18 +77,16 @@ static cell_t BZ2_DecompressFile(IPluginContext *pCtx, const cell_t *params)
 	char *outputFile;
 	pCtx->LocalToString(params[2], &outputFile);
 
-	g_pAsyncCallback->AddFunction(pCtx, static_cast<funcid_t>(params[3]));
-
 	char inputPath[PLATFORM_MAX_PATH];
 	smutils->BuildPath(Path_Game, inputPath, sizeof(inputPath), "%s", inputFile);
 	
 	char outputPath[PLATFORM_MAX_PATH];
 	smutils->BuildPath(Path_Game, outputPath, sizeof(outputPath), "%s", outputFile);
 
-	BZThread* myThread = new BZThread(false,1,inputPath,inputFile,outputPath,outputFile,pCtx,g_pAsyncCallback, static_cast<funcid_t>(params[3]), params[4]);
-    ThreadParams threadparams;
-    threadparams.flags = Thread_AutoRelease;
-    threadparams.prio = ThreadPrio_Low;
+	BZThread* myThread = new BZThread(false,1,inputPath,inputFile,outputPath,outputFile,pCtx, static_cast<funcid_t>(params[3]), params[4]);
+	ThreadParams threadparams;
+	threadparams.flags = Thread_AutoRelease;
+	threadparams.prio = ThreadPrio_Low;
 
 	IThreadHandle *update_thread;
 	update_thread = g_pThreader->MakeThread(myThread, &threadparams);
@@ -106,12 +100,28 @@ static cell_t BZ2_DecompressFile(IPluginContext *pCtx, const cell_t *params)
 	return true;
 }
 
+void SMBZ2::CallCallbackFinish(void *data)
+{
+	BZIPCallbackInfo *info = (BZIPCallbackInfo*)data;
+
+	IPluginFunction *pFunction = info->g_pCtx->GetFunctionById(info->myfunc);
+	if(pFunction == NULL)
+		return;
+
+	pFunction->PushCell(info->bzerror);
+	pFunction->PushString(info->sInputPath);
+	pFunction->PushString(info->sOutputFile);
+	pFunction->PushCell(info->anyData);
+
+	cell_t result = 0;
+	pFunction->Execute(&result);
+}
+
 bool SMBZ2::SDK_OnLoad(char *error, size_t maxlength, bool late)
 {
 	sharesys->AddNatives(myself, smbz2_natives);
 	sharesys->RegisterLibrary(myself, "bzip2");
 
-	g_pAsyncCallback = forwards->CreateForwardEx(NULL, ET_Ignore, 4, NULL, Param_Cell, Param_String, Param_String, Param_Cell);
 	return true;
 }
 
