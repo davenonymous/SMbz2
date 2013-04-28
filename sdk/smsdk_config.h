@@ -40,9 +40,9 @@
 /* Basic information exposed publicly */
 #define SMEXT_CONF_NAME			"SMbz2"
 #define SMEXT_CONF_DESCRIPTION	"Very basic extension to de/compress bz2 files"
-#define SMEXT_CONF_VERSION		"0.0.2"
-#define SMEXT_CONF_AUTHOR		"Thrawn"
-#define SMEXT_CONF_URL			"http://aaa.einfachonline.net/"
+#define SMEXT_CONF_VERSION		"0.0.3"
+#define SMEXT_CONF_AUTHOR		"Thraaawn"
+#define SMEXT_CONF_URL			"https://github.com/thraaawn/SMbz2"
 #define SMEXT_CONF_LOGTAG		"SMBZ2"
 #define SMEXT_CONF_LICENSE		"GPL"
 #define SMEXT_CONF_DATESTRING	__DATE__
